@@ -14,7 +14,7 @@ resource "google_pubsub_topic" "topic" {
   }
   schema_settings {
     encoding = "JSON"
-    schema = google_pubsub_schema.topic_schema.id
+    schema   = google_pubsub_schema.topic_schema.id
   }
   message_retention_duration = "86600s"
 }
@@ -33,7 +33,6 @@ resource "google_pubsub_subscription" "topic_subscription" {
 resource "google_bigquery_dataset" "dataset" {
   dataset_id = "pubsubbqdataset"
 }
-
 
 resource "google_bigquery_table" "table" {
   table_id   = "pubsubbq-table"
