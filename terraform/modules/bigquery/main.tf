@@ -9,6 +9,6 @@ resource "google_bigquery_table" "table" {
   dataset_id = google_bigquery_dataset.dataset.dataset_id
 
   schema = var.tables[count.index].schema
-
+  
   deletion_protection = var.tables[count.index].deletion_protection
 }

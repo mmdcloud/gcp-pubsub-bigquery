@@ -11,5 +11,6 @@ variable "subscriptions" {
     subscription_name = string
     bq_use_topic_schema = bool
     bq_table = string
+    sa = string
   }))
 }

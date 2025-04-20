@@ -20,6 +20,7 @@ resource "google_pubsub_subscription" "subscription" {
   topic = google_pubsub_topic.topic.id
 
   bigquery_config {
+    service_account_email = var.subscriptions[count.index].sa
     use_topic_schema = var.subscriptions[count.index].bq_use_topic_schema
     table            = var.subscriptions[count.index].bq_table
   }

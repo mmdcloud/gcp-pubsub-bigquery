@@ -1,3 +1,5 @@
+data "google_project" "current" {}
+
 module "bigquery" {
   source     = "./modules/bigquery"
   dataset_id = "pubsubbqdataset"
@@ -23,6 +25,24 @@ EOF
   }]
 }
 
+# Service account
+resource "google_service_account" "service_account" {
+  account_id   = "pubsub-bq-sa"
+  display_name = "Pub/Sub to BigQuery Service Account"
+}
+
+resource "google_project_iam_member" "bigquery_data_editor" {
+  project = data.google_project.current.project_id
+  role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.service_account.email}"
+}
+
+resource "google_project_iam_member" "pubsub_subscriber" {
+  project = data.google_project.current.project_id
+  role    = "roles/pubsub.admin"
+  member  = "serviceAccount:${google_service_account.service_account.email}"
+}
+
 module "pubsub" {
   source                     = "./modules/pubsub"
   topic_name                 = "pubsubbq-topic"
@@ -33,6 +53,7 @@ module "pubsub" {
   schema_definition          = "{\n  \"type\" : \"record\",\n  \"name\" : \"Avro\",\n  \"fields\" : [\n    {\n      \"name\" : \"name\",\n      \"type\" : \"string\"\n    },\n    {\n      \"name\" : \"city\",\n      \"type\" : \"string\"\n    }\n  ]\n}\n"
   subscriptions = [
     {
+      sa = google_service_account.service_account.email
       subscription_name   = "pubsubbq-topic-subscription"
       bq_use_topic_schema = true
       bq_table            = "${module.bigquery.tables[0].project}.${module.bigquery.tables[0].dataset_id}.${module.bigquery.tables[0].table_id}"
