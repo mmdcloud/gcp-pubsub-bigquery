@@ -53,7 +53,7 @@ module "pubsub" {
   schema_definition          = "{\n  \"type\" : \"record\",\n  \"name\" : \"Avro\",\n  \"fields\" : [\n    {\n      \"name\" : \"name\",\n      \"type\" : \"string\"\n    },\n    {\n      \"name\" : \"city\",\n      \"type\" : \"string\"\n    }\n  ]\n}\n"
   subscriptions = [
     {
-      sa = google_service_account.service_account.email
+      sa                  = google_service_account.service_account.email
       subscription_name   = "pubsubbq-topic-subscription"
       bq_use_topic_schema = true
       bq_table            = "${module.bigquery.tables[0].project}.${module.bigquery.tables[0].dataset_id}.${module.bigquery.tables[0].table_id}"
