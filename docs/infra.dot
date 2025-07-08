@@ -1,0 +1,26 @@
+digraph INFRA {
+  node [ color = "black", fillcolor = "#E6E6E6", height =1, style = "filled,bold,rounded", fontname = "Arial" ];
+  "pubsubbqdataset" [ label = "pubsubbqdataset
+(google_bigquery_dataset)", shape =cylinder, fillcolor = "#FFCFB3" ];
+  "pubsubbq-table" [ label = "pubsubbq-table
+(google_bigquery_table)", shape =cylinder, fillcolor = "#FFCFB3" ];
+  "pubsub-bq-sa" [ label = "pubsub-bq-sa
+(google_service_account)", shape =rectangle ];
+  "bigquery_data_editor" [ label = "bigquery_data_editor
+(google_project_iam_member)", shape =rectangle ];
+  "pubsub_subscriber" [ label = "pubsub_subscriber
+(google_project_iam_member)", shape =rectangle ];
+  "pubsubbq-topic-schema" [ label = "pubsubbq-topic-schema
+(google_pubsub_schema)", shape =rectangle, fillcolor = "#CCE0AC" ];
+  "pubsubbq-topic" [ label = "pubsubbq-topic
+(google_pubsub_topic)", shape =rectangle, fillcolor = "#CCE0AC" ];
+  "pubsubbq-topic-subscription" [ label = "pubsubbq-topic-subscription
+(google_pubsub_subscription)", shape =rectangle, fillcolor = "#CCE0AC" ];
+  "pubsubbq-table" -> "pubsubbqdataset";
+  "bigquery_data_editor" -> "pubsub-bq-sa";
+  "pubsub_subscriber" -> "pubsub-bq-sa";
+  "pubsubbq-topic" -> "pubsubbq-topic-schema";
+  "pubsubbq-topic-subscription" -> "pubsubbq-topic";
+  "pubsubbq-topic-subscription" -> "pubsub-bq-sa";
+  "pubsubbq-topic-subscription" -> "pubsubbq-table";
+}
