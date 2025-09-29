@@ -59,4 +59,5 @@ module "pubsub" {
       bq_table            = "${module.bigquery.tables[0].project}.${module.bigquery.tables[0].dataset_id}.${module.bigquery.tables[0].table_id}"
     }
   ]
+  depends_on = [ google_project_iam_member.pubsub_subscriber ]
 }
